@@ -7,6 +7,7 @@ const app = express();
 const uri = "mongodb+srv://degenhack:passw0rd@cluster0.tjwkbm5.mongodb.net/?retryWrites=true&w=majority";
 
 const gamesRoutes = require("./routes/games");
+const usersRoutes = require("./routes/users");
 
 mongoose
   .connect(uri)
@@ -35,5 +36,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/games', gamesRoutes);
+app.use('/api/users', usersRoutes);
 
 module.exports = app;
