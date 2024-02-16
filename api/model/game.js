@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const gameSchema = mongoose.Schema({
   name: { type: String, required: true },
-  participants: { type: [String], required: false },
+  participants: { type: [{userId: { type: String }, tokens: { type: Number, default: 0 }}], required: false },
   winnerId: { type: String, required: false },
-  fixedPrize: { type: Boolean, required: false, default: false },
+  prize: { type: Number, required: false, default: 0 },
   minParticipants: { type: Number, required: true },
   maxParticipants: { type: Number, required: true },
   timestampStart: { type: Number, required: false, default: 0 },

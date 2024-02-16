@@ -89,10 +89,10 @@ router.put("/:id/assign", (req, res, next) => {
                 req.body.users.forEach(user => {
                     if (user.operation == 'ADD') {
                         console.log('adding user ', user.id)
-                        game.participants.push(user.id);
+                        game.participants.push({ userId: user.id, tokens: 0 });
                     } else if (user.operation == 'REMOVE') {
                         console.log('removing user ', user.id)
-                        game.participants = game.participants.filter(p => p !== user.id)
+                        game.participants = game.participants.filter(p => p.userId !== user.id)
                     }                    
                 });
                 if (game.maxParticipants < game.participants.length) {
@@ -183,6 +183,43 @@ router.put("/:id/end", (req, res, next) => {
                     }
               }
           }
+      } else {
+        res.status(404).json({ message: `Game with id ${req.params.id} not found` });
+      }
+    })
+    .catch(error => {
+      res.status(400).json({
+        message: "Fetching game failed",
+        error: error
+      });
+    });
+});
+
+router.put("/:id/prize", (req, res, next) => {
+    Game.findById(req.params.id)
+    .then(game => {
+      if (game) {
+        if (req.body.amount) {
+            if (game.timestampEnd > 0) {
+                res.status(400).json({ message: `Game ${req.params.id} already ended` });
+            } else if (!req.body.userId) {
+                res.status(400).json({ message: `User ID not provided` });
+            } else {
+                game.prize += Number(req.body.amount);
+                game.participants.forEach(p => {
+                    if (p.userId == req.body.userId) {
+                        p.tokens += Number(req.body.amount);
+                    }
+                })
+                game.save().then(() => {
+                    res.status(200).json({
+                        message: `Game prize updated successfully`
+                    });
+                });
+            }
+        } else {
+            res.status(400).json({ message: `Token amount not provided` });
+        }
       } else {
         res.status(404).json({ message: `Game with id ${req.params.id} not found` });
       }
