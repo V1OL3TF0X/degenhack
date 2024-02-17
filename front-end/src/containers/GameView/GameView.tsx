@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Card, Box, Typography, CircularProgress } from '@mui/material';
+import { Card, Box, Typography, CircularProgress, CardActions, Button } from '@mui/material';
+
+import GroupsIcon from '@mui/icons-material/Groups';
+import TokenIcon from '@mui/icons-material/Token';
 import styles from './GameView.module.scss';
 import { useGetAllGames } from '../../api/hooks/games/useGetAllGames';
 import { AlertDialog } from '../../components/Dialog/alertDialog';
@@ -22,14 +25,21 @@ const GameView = () => {
   };
 
   const games = allGames?.map((game) => (
-    <Card key={game._id} className={styles.gameCard} onClick={() => handleClickOpen(game._id)}>
-      <Typography variant='h5'>Game Name:</Typography>
-      <Typography variant='h6'>{game.name}</Typography>
-      <div>
-        <Typography>Min Participants: {game.minParticipants}</Typography>
-        <Typography>Max Participants: {game.maxParticipants}</Typography>
-      </div>
-      <Typography>Prize: {game.prize}</Typography>
+    <Card key={game._id} className={styles.gameCard}>
+      <Typography variant='h5'>{game.name}</Typography>
+      <Box className={styles.gameDetails}>
+        <div >
+          <GroupsIcon />
+          <Typography>{game.minParticipants} - {game.maxParticipants}</Typography>
+        </div>
+        <div>
+        <TokenIcon/>
+        <Typography>{game.prize}</Typography>
+        </div>
+      </Box>
+      <CardActions>
+        <Button variant="outlined" onClick={() => handleClickOpen(game._id)}>Join Game</Button>
+      </CardActions>
     </Card>
   ));
 
