@@ -4,10 +4,18 @@ import styles from './header.module.scss';
 
 const Header = ({ onLoginClick, walletAddress, formatWalletAddress }) => {
     return (
-        <AppBar position="static" color="transparent" sx={{ boxShadow: "none" }}>
+        <AppBar position="static" color="transparent" sx={{ boxShadow: "none", marginBottom: "1rem" }}>
             <Toolbar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: "default" }}>
-                    GameIn
+            <Typography variant="h6" component="div" sx={{
+                flexGrow: 1,
+                fontWeight: 'bold', 
+                fontSize: '1.5rem',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                margin: '20px 0',
+                cursor: 'default'
+                }}>
+                    GameIN
                 </Typography>
                 <Box>
                     <Button

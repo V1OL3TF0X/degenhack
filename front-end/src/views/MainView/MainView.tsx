@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import UserDashboard from '../../containers/UserDashboard/UserDashboard';
 import GameView from '../../containers/GameView/GameView';
 import styles from './MainView.module.scss';
 import Header from '../../components/Header/header';
@@ -10,7 +9,6 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 
 function MainView() {
   const [isWalletDialogOpen, setWalletDialogOpen] = useState(false);
-  const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | null>(null);
 
   useEffect(() => {
@@ -29,7 +27,6 @@ function MainView() {
 
     const allAccounts = await web3Accounts();
     if (allAccounts.length) {
-      setAccounts(allAccounts); // Store all fetched accounts
       const selected = allAccounts[0]; // Automatically select the first account for simplicity
       setSelectedAccount(selected); // Update state with selected account
       localStorage.setItem('selectedWalletAddress', selected.address); // Persist selected account address
@@ -66,7 +63,6 @@ function MainView() {
         formatWalletAddress={formatWalletAddress}
       />
       <Box className={styles.mainViewContainer}>
-        <UserDashboard />
         <GameView />
       </Box>
       <WalletConnectDialog

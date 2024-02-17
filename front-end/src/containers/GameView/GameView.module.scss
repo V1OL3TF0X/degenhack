@@ -1,28 +1,16 @@
 .gamesBox {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: #faf5f0;
-  padding: 1.5rem;
-  border-radius: 25px;
-  width: calc(70% - 0.5rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px ,1fr));
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  width: 100%;
 }
 
 .gameCard {
-  max-width: 25vw;
-  padding: 1rem;
-  text-align: center;
+  background-image: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg";
 }
 
-.gameCardActions {
-  padding: 1rem;
-}
-
-.gameDetails {
-  padding: 1rem 0;
-
-  > div {
-    display: flex;
-    justify-content: space-between;
-  }
+.participantsNumber {
+  display: flex;
+  gap: 10px;
 }
