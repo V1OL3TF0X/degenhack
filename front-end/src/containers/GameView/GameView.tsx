@@ -28,17 +28,21 @@ const GameView = () => {
     <Card key={game._id} className={styles.gameCard}>
       <Typography variant='h5'>{game.name}</Typography>
       <Box className={styles.gameDetails}>
-        <div >
+        <div>
           <GroupsIcon />
-          <Typography>{game.minParticipants} - {game.maxParticipants}</Typography>
+          <Typography>
+            {game.minParticipants} - {game.maxParticipants}
+          </Typography>
         </div>
         <div>
-        <TokenIcon/>
-        <Typography>{game.prize}</Typography>
+          <TokenIcon />
+          <Typography>{game.prize}</Typography>
         </div>
       </Box>
       <CardActions>
-        <Button variant="outlined" onClick={() => handleClickOpen(game._id)}>Join Game</Button>
+        <Button variant='outlined' onClick={() => handleClickOpen(game._id)}>
+          Join Game
+        </Button>
       </CardActions>
     </Card>
   ));
