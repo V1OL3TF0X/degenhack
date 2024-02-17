@@ -19,10 +19,11 @@
 }
 
 .gameDetails {
-  padding: 1rem 0;
+  padding: 1rem 3rem;
 
   > div {
     display: flex;
+    gap: 10px;
     justify-content: space-between;
   }
 }

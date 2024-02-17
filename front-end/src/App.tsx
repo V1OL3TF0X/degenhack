@@ -21,7 +21,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -32,10 +31,10 @@ function App() {
   return (
     <UseInkathonProvider appName='My dApp' defaultChain={alephzeroTestnet} deployments={getDeployments()}>
       <ThemeProvider theme={darkTheme}>
-      <QueryClientProvider client={queryClient}>
-        <Toaster />
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <Toaster />
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </ThemeProvider>
     </UseInkathonProvider>
   );

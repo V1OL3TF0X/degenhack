@@ -21,9 +21,9 @@ function MainView() {
   }, []);
 
   async function connectWallet() {
-    const extensions = await web3Enable("Polki");
+    const extensions = await web3Enable('Polki');
     if (!extensions.length) {
-      console.error("No Extension Found");
+      console.error('No Extension Found');
       return;
     }
 

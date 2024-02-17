@@ -1,27 +1,56 @@
 import { useState } from 'react';
-import { Card, Box, Typography, CircularProgress, CardActions, Button } from '@mui/material';
+import { Card, Box, Typography, CircularProgress, CardActions } from '@mui/material';
 
 import GroupsIcon from '@mui/icons-material/Groups';
-import TokenIcon from '@mui/icons-material/Token';
+import TokenIcon from '../../assets/A0_icon.svg?react';
 import styles from './GameView.module.scss';
 import { useGetAllGames } from '../../api/hooks/games/useGetAllGames';
-import { AlertDialog } from '../../components/Dialog/alertDialog';
+import toast from 'react-hot-toast';
+import { useRegisteredContract, useInkathon, contractQuery, decodeOutput } from '@scio-labs/use-inkathon';
+import { LoadingButton } from '@mui/lab';
+import { CONTRACT_ID } from '../../web3/getDeployments';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getAllKeysString = (obj: any) => Object.entries(obj).reduce((acc, [k, v]) => `${acc}\n  - ${k}: ${v}`, '');
 
 const GameView = () => {
+  const { api, activeAccount } = useInkathon();
   const { isPending, isError, data: allGames, error } = useGetAllGames();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isChecking, setIsChecking] = useState(false);
+  const { contract } = useRegisteredContract(CONTRACT_ID);
 
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
 
-  const handleClickOpen = (id: string) => {
-    setIsDialogOpen(true);
-    console.log(id);
-  };
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
+  const handleJoin = async (id: string) => {
+    if (!contract || !api || !activeAccount) {
+      return;
+    }
+    setIsChecking(true);
+    try {
+      let result;
+      const { gasRequired, storageDeposit } = (result = await contractQuery(
+        api,
+        activeAccount.address,
+        contract,
+        'joinGame',
+        { value: 100, gasLimit: -1 },
+        [id]
+      ));
+      const { isError, decodedOutput } = decodeOutput(result, contract, 'joinGame');
+      const costs = `\ngas required: ${getAllKeysString(gasRequired.toHuman())}\nstorage deposit ${getAllKeysString(storageDeposit.toHuman())}`;
+      if (!isError) {
+        // TODO API join
+        toast.success(`game joined successfully ${decodedOutput}` + costs);
+      } else {
+        toast.error(decodedOutput + costs);
+      }
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   if (isPending) {
@@ -47,14 +76,18 @@ const GameView = () => {
               <Typography>{prize}</Typography>
             </div>
           </Box>
-          <CardActions>
-            <Button variant='outlined' onClick={() => handleClickOpen(id)}>
+          <CardActions sx={{ justifyContent: 'center' }}>
+            <LoadingButton
+              variant='outlined'
+              disabled={!api || !contract || !activeAccount}
+              onClick={() => handleJoin(id)}
+              loading={!contract || isChecking}
+            >
               Join Game
-            </Button>
+            </LoadingButton>
           </CardActions>
         </Card>
       ))}
-      {isDialogOpen && <AlertDialog open={isDialogOpen} onClose={handleClose} />}
     </Box>
   );
 };
