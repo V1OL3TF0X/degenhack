@@ -21,7 +21,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
