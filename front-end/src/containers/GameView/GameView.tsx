@@ -9,6 +9,7 @@ import { useGetAllGames } from '../../api/hooks/games/useGetAllGames';
 import toast from 'react-hot-toast';
 import { useRegisteredContract, useInkathon, contractQuery, decodeOutput } from '@scio-labs/use-inkathon';
 import { CONTRACT_ID } from '../../web3/getDeployments';
+import { BN } from '@polkadot/util';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getAllKeysString = (obj: any) => Object.entries(obj).reduce((acc, [k, v]) => `${acc}\n  - ${k}: ${v}`, '');
@@ -30,12 +31,15 @@ const GameView = () => {
     setIsChecking(true);
     try {
       let result;
+      let bn = new BN(10);
+      bn = bn.pow(new BN(api.registry.chainDecimals[0] || 12));
+      bn.imuln(5); // TODO - bet amount from API
       const { gasRequired, storageDeposit } = (result = await contractQuery(
         api,
         activeAccount.address,
         contract,
         'joinGame',
-        { value: 100, gasLimit: -1 },
+        { value: bn, gasLimit: -1 },
         [id]
       ));
       const { isError, decodedOutput } = decodeOutput(result, contract, 'joinGame');

@@ -1,5 +1,5 @@
 import { alephzeroTestnet, SubstrateDeployment } from '@scio-labs/use-inkathon';
-const CONTRACT_ADDRESS = '5DaPX8kea6wthEc3b4jjNXVejABM3GRcURM6zSgB8XHArzfx';
+const CONTRACT_ADDRESS = '5CJ9acajsPWrzWhMh2heU3eHaHSKpCkrp7J3TZDbSNVaZY1W';
 
 export const CONTRACT_ID = 'prize manager';
 
