@@ -5,13 +5,14 @@ const router = express.Router();
 
 router.post("", (req, res, next) => {
     const user = new User({
-      publicKey: req.body.publicKey
+      publicKey: req.body.publicKey,
+      avatarLink: req.body.avatarLink
     });
 
     user.save().then(createdUser => {
         res.status(201).json({
           message: "User added successfully",
-          post: {
+          user: {
             id: createdUser._id
           }
         });
