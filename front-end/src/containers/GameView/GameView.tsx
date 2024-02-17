@@ -24,39 +24,38 @@ const GameView = () => {
     setIsDialogOpen(false);
   };
 
-  const games = allGames?.map((game) => (
-    <Card key={game._id} className={styles.gameCard}>
-      <Typography variant='h5'>{game.name}</Typography>
-      <Box className={styles.gameDetails}>
-        <div>
-          <GroupsIcon />
-          <Typography>
-            {game.minParticipants} - {game.maxParticipants}
-          </Typography>
-        </div>
-        <div>
-          <TokenIcon />
-          <Typography>{game.prize}</Typography>
-        </div>
-      </Box>
-      <CardActions>
-        <Button variant='outlined' onClick={() => handleClickOpen(game._id)}>
-          Join Game
-        </Button>
-      </CardActions>
-    </Card>
-  ));
+  if (isPending) {
+    return <CircularProgress />;
+  }
+
+  if (isError) {
+    return null;
+  }
 
   return (
-    <>
-      {isPending && <CircularProgress />}
-      {!isPending && allGames && (
-        <Box className={styles.gamesBox}>
-          {games}
-          {isDialogOpen && <AlertDialog open={isDialogOpen} close={handleClose} />}
-        </Box>
-      )}
-    </>
+    <Box className={styles.gamesBox}>
+      {allGames.map(({ name, minParticipants: min, maxParticipants: max, prize, _id: id }) => (
+        <Card key={id} className={styles.gameCard}>
+          <Typography variant='h5'>{name}</Typography>
+          <Box className={styles.gameDetails}>
+            <div>
+              <GroupsIcon />
+              <Typography>{min === max ? min : `${min} - ${max}`}</Typography>
+            </div>
+            <div>
+              <TokenIcon />
+              <Typography>{prize}</Typography>
+            </div>
+          </Box>
+          <CardActions>
+            <Button variant='outlined' onClick={() => handleClickOpen(id)}>
+              Join Game
+            </Button>
+          </CardActions>
+        </Card>
+      ))}
+      {isDialogOpen && <AlertDialog open={isDialogOpen} onClose={handleClose} />}
+    </Box>
   );
 };
 
