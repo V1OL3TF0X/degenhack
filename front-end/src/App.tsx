@@ -4,6 +4,7 @@ import MainView from './views/MainView/MainView';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { getDeployments } from './web3/getDeployments';
 import { Toaster } from 'react-hot-toast';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const queryClient = new QueryClient();
 
@@ -20,13 +21,22 @@ const router = createBrowserRouter([
   },
 ]);
 
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 function App() {
   return (
     <UseInkathonProvider appName='My dApp' defaultChain={alephzeroTestnet} deployments={getDeployments()}>
+      <ThemeProvider theme={darkTheme}>
       <QueryClientProvider client={queryClient}>
         <Toaster />
         <RouterProvider router={router} />
       </QueryClientProvider>
+      </ThemeProvider>
     </UseInkathonProvider>
   );
 }
