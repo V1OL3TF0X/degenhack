@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, ButtonBase } from '@mui/material';
 import game from '../../assets/ticTacToe.jpg'
 
 import GroupsIcon from '@mui/icons-material/Groups';
+import TokenIcon from "../../assets/A0_icon.svg?react";
 import styles from './GameView.module.scss';
 import { useGetAllGames } from '../../api/hooks/games/useGetAllGames';
 import toast from 'react-hot-toast';
@@ -64,9 +65,8 @@ const GameView = () => {
 
   return (
     <Box className={styles.gamesBox} >
-      {allGames.map(({name, minParticipants: min, maxParticipants: max, _id: id }) => (
-        <Box key={id} component="button" onClick={() => handleJoin(id)}  disabled={!api || !contract || !activeAccount || isLoading}>
-      
+      {allGames.map(({name, minParticipants: min, maxParticipants: max, _id: id, betAmount }) => (
+        <Box key={id} component={ButtonBase} onClick={() => handleJoin(id)}  disabled={!api || !contract || !activeAccount || isLoading}>
           <Box
            sx={{
             overflow: 'hidden',
@@ -100,10 +100,14 @@ const GameView = () => {
               <GroupsIcon />
               <Typography>{min === max ? min : `${min} - ${max}`}</Typography>
             </div>
+            <div className={styles.participantsNumber}>
+              <TokenIcon />
+              <Typography>{betAmount}</Typography>
+            </div>
           </div>
           </Box>
         </Box>
-        
+
       ))}
     </Box>
   );

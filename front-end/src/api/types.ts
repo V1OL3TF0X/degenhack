@@ -15,5 +15,6 @@ export type Games = [
     timestampStart: number;
     timestampEnd: number;
     embeddedUrl: string;
+    betAmount: number;
   },
 ];
