@@ -70,7 +70,7 @@ const GameView = () => {
   return (
     <Box className={styles.gamesBox} >
       {allGames.map(({name, minParticipants: min, maxParticipants: max, _id: id, betAmount }) => (
-        <Box key={id} component={ButtonBase} onClick={() => handleJoin(id)}  disabled={!api || !contract || !activeAccount || isLoading}>
+        <Box maxWidth='300px' key={id} component={ButtonBase} onClick={() => handleJoin(id)}  disabled={!api || !contract || !activeAccount || isLoading}>
           <Box
            sx={{
             overflow: 'hidden',
