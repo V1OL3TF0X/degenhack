@@ -1,0 +1,29 @@
+.gamesBox {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: #faf5f0;
+  padding: 1.5rem;
+  border-radius: 25px;
+  width: calc(65% - 0.5rem);
+}
+
+.gameCard {
+  max-width: 25vw;
+  padding: 1rem;
+  text-align: center;
+}
+
+.gameCardActions {
+  padding: 1rem;
+}
+
+.gameDetails {
+  padding: 1rem 0;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
