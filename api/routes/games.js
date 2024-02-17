@@ -10,7 +10,8 @@ router.post("", (req, res, next) => {
       minParticipants: req.body.minParticipants,
       maxParticipants: req.body.maxParticipants,
       participants: req.body.participants ? req.body.participants : [],
-      prize: req.body.prize
+      prize: req.body.prize,
+      betAmount: req.body.betAmount
     });
 
     game.save().then(createdGame => {

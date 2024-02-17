@@ -1,0 +1,35 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+	<title>New Project</title>
+	<defs>
+		<image  width="11" height="18" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAASAgMAAADwG8zmAAAAAXNSR0IB2cksfwAAAAxQTFRFAAAAAAAA9uXQcmMbo4JxEgAAAAR0Uk5TAP//AJ4vrwUAAAArSURBVHicY2ANdWCQWjUBJwbJM65kgOPQlSEMUaumMLCudGDgDQWKuYIxALvcEUW85nRqAAAAAElFTkSuQmCC"/>
+		<image  width="7" height="3" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAADAgMAAAAirf1WAAAAAXNSR0IB2cksfwAAAAlQTFRFAAAABwUAAnkkl/ykCAAAAAN0Uk5TAP//RFDWIQAAABFJREFUeJxjEAlgkEhgYGAAAATRAN3c0ZdJAAAAAElFTkSuQmCC"/>
+		<image  width="3" height="2" id="img3" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACAQMAAACnuvRZAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAAAAAApWe5zwAAAAJ0Uk5T/wDltzBKAAAADElEQVR4nGNQYHgAAAFEAQFdKvHKAAAAAElFTkSuQmCC"/>
+		<image  width="8" height="4" id="img4" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAEAQMAAACJA+yzAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAA7k8xICQXlQAAAAJ0Uk5TAP9bkSK1AAAAEElEQVR4nGNgYPjH8I4hBwAINAJZ9PX34gAAAABJRU5ErkJggg=="/>
+		<image  width="11" height="6" id="img5" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAGAgMAAABoXIxrAAAAAXNSR0IB2cksfwAAAAlQTFRFAAAA2I9Sa0YnaBfuwQAAAAN0Uk5TAP//RFDWIQAAABhJREFUeJxjYAtzYADhsLAQBrGwAAYoHwAxkAQtBmuRMgAAAABJRU5ErkJggg=="/>
+		<image  width="8" height="5" id="img6" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFAQMAAABCXz8WAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAADmEGOnxrFgAAAAJ0Uk5TAP9bkSK1AAAAEElEQVR4nGNgYLjGEAKEDAAIhAF/sPewaQAAAABJRU5ErkJggg=="/>
+		<image  width="11" height="8" id="img7" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIAQMAAAAV9pfLAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAAzhs5yGVBFwAAAAJ0Uk5TAP9bkSK1AAAAFklEQVR4nGNgYGCwb2BwcICiAwkQBAAyhAWg5/dbmQAAAABJRU5ErkJggg=="/>
+		<image  width="10" height="4" id="img8" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAEAgMAAADKVkZeAAAAAXNSR0IB2cksfwAAAAlQTFRFBrwHAAAABrwHZh5liQAAAAN0Uk5T/wAARO7wMwAAABhJREFUeJxjEA0VYFBwEmBwFQlgCHAMAAAQ8gJ3kUyo3gAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Layer 1" href="#img1" x="6" y="5"/>
+	<g id="eyes">
+		<use id="eyes1" href="#img2" x="8" y="8"/>
+	</g>
+	<g id="mouths">
+		<use id="mouth1" href="#img3" x="10" y="11"/>
+	</g>
+	<g id="pants">
+		<use id="pants1" href="#img4" x="8" y="19"/>
+	</g>
+	<g id="shirts">
+		<use id="shirt1" href="#img5" x="6" y="14"/>
+	</g>
+	<g id="hair">
+		<use id="hair4" href="#img6" x="8" y="2"/>
+	</g>
+	<g id="acc">
+		<use id="acc3" href="#img7" x="6" y="3"/>
+		<use id="acc1" href="#img8" x="7" y="6"/>
+	</g>
+</svg>

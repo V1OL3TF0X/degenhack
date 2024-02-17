@@ -4,44 +4,107 @@ import GameView from '../../containers/GameView/GameView';
 import styles from './MainView.module.scss';
 import Header from '../../components/Header/header';
 import WalletConnectDialog from '../../components/WalletConnectDialog/walletConnectDialog';
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import {
+  SubstrateChain,
+  SubstrateWalletPlatform,
+  alephzero,
+  allSubstrateWallets,
+  getSubstrateChain,
+  isWalletInstalled,
+  useBalance,
+  useInkathon,
+} from '@scio-labs/use-inkathon'
+import { encodeAddress } from '@polkadot/util-crypto'
+
+
 
 function MainView() {
   const [isWalletDialogOpen, setWalletDialogOpen] = useState(false);
+  const [_, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | null>(null);
 
-  useEffect(() => {
-    const savedAccount = localStorage.getItem('selectedWalletAddress');
-    if (savedAccount) {
-      setSelectedAccount({ address: savedAccount } as InjectedAccountWithMeta);
-    }
-  }, []);
 
-  async function connectWallet() {
-    const extensions = await web3Enable("Polki");
-    if (!extensions.length) {
-      console.error("No Extension Found");
-      return;
-    }
 
-    const allAccounts = await web3Accounts();
-    if (allAccounts.length) {
-      const selected = allAccounts[0]; // Automatically select the first account for simplicity
-      setSelectedAccount(selected); // Update state with selected account
-      localStorage.setItem('selectedWalletAddress', selected.address); // Persist selected account address
-      setWalletDialogOpen(false); // Close the dialog
-    } else {
-      console.log('No accounts found');
-    }
+  const truncateHash = (hash: string | undefined, paddingLength = 6): string | undefined => {
+    if (!hash?.length) return undefined
+    if (hash.length <= paddingLength * 2 + 1) return hash
+    return hash.replace(hash.substring(paddingLength, hash.length - paddingLength), '…')
   }
+
+  const {
+    activeAccount,
+    activeChain,
+    api,
+    accounts
+  } = useInkathon()
+
+  useEffect(() => {
+    if (activeAccount && activeAccount.address) {
+      const publicKey = encodeAddress(activeAccount.address, activeChain?.ss58Prefix || 42);
+      fetchAvatarUrl(publicKey);
+    }
+  }, [activeAccount, activeChain]);
+
+  const fetchAvatarUrl = async (publicKey) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/publickey/${publicKey}`);
+      const data = await response.json();
+      if (data && data.avatarLink) {
+        setAvatarUrl(data.avatarLink);
+        console.log(data.avatarLink)
+      } else {
+        setAvatarUrl(null);
+      }
+    } catch (error) {
+      console.error('Failed to fetch avatar:', error);
+      setAvatarUrl(null);
+    }
+  };
+
+  const [chainInfo, setChainInfo] = useState<{ [_: string]: any }>()
+
+  // Fetch Chain Info
+  const fetchChainInfo = async () => {
+    if (!api) {
+      setChainInfo(undefined)
+      return
+    }
+
+    const chain = (await api.rpc.system.chain())?.toString() || ''
+    const version = (await api.rpc.system.version())?.toString() || ''
+    const properties = ((await api.rpc.system.properties())?.toHuman() as any) || {}
+    const tokenSymbol = properties?.tokenSymbol?.[0] || 'UNIT'
+    const tokenDecimals = properties?.tokenDecimals?.[0] || 12
+    const chainInfo = {
+      Chain: chain,
+      Version: version,
+      Token: `${tokenSymbol} (${tokenDecimals} Decimals)`,
+    }
+    setChainInfo(chainInfo)
+
+  }
+  useEffect(() => {
+    fetchChainInfo()
+    console.log(chainInfo)
+    console.log(activeAccount)
+  }, [api])
+
+
+
+  const { reducibleBalanceFormatted } = useBalance(activeAccount?.address, true, {
+    forceUnit: false,
+    fixedDecimals: 2,
+    removeTrailingZeros: true,
+  })
 
   function disconnectWallet() {
     localStorage.removeItem('selectedWalletAddress');
     setSelectedAccount(null); // Clear the selected account
   }
 
-  // Function to handle login click, which either opens the dialog or disconnects the wallet
   const handleLoginClick = () => {
     if (!selectedAccount) {
       setWalletDialogOpen(true);
@@ -50,17 +113,20 @@ function MainView() {
     }
   };
 
-  // Function to format the displayed account address
-  const formatWalletAddress = (address) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+
 
   return (
     <>
       <Header
         onLoginClick={handleLoginClick}
-        walletAddress={selectedAccount ? selectedAccount.address : ''}
-        formatWalletAddress={formatWalletAddress}
+        walletAddress={activeAccount ?
+          truncateHash(
+            encodeAddress(activeAccount.address, activeChain?.ss58Prefix || 42),
+            8,
+          ) : ''}
+        balance={reducibleBalanceFormatted}
+        avatarUrl={avatarUrl}
+        loadingBalance={!api}
       />
       <Box className={styles.mainViewContainer}>
         <GameView />
@@ -68,7 +134,7 @@ function MainView() {
       <WalletConnectDialog
         open={isWalletDialogOpen}
         onClose={() => setWalletDialogOpen(false)}
-        onConnect={connectWallet}
+
       />
     </>
   );
