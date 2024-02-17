@@ -5,6 +5,7 @@ const gameSchema = mongoose.Schema({
   participants: { type: [{userId: { type: String }, tokens: { type: Number, default: 0 }}], required: false },
   winnerId: { type: String, required: false },
   prize: { type: Number, required: false, default: 0 },
+  betAmount: { type: Number, required: true },
   minParticipants: { type: Number, required: true },
   maxParticipants: { type: Number, required: true },
   timestampStart: { type: Number, required: false, default: 0 },
