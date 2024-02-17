@@ -4,15 +4,18 @@ const User = require("../model/user");
 const router = express.Router();
 
 router.post("", (req, res, next) => {
+    const avatar = 'eyes6-mouths4-pants6-shirts0-hair4-acc5.png';
     const user = new User({
-      publicKey: req.body.publicKey
+      publicKey: req.body.publicKey,
+      avatarLink: avatar
     });
 
     user.save().then(createdUser => {
         res.status(201).json({
           message: "User added successfully",
-          post: {
-            id: createdUser._id
+          user: {
+            id: createdUser._id,
+            avatarLink: avatar
           }
         });
       }).catch(error => {
