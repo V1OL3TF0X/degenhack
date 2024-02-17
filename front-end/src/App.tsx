@@ -10,13 +10,18 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const queryClient = new QueryClient();
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<MainView />}>
-      <Route path="games" element={<MainView />} />
-    </Route>
-  )
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainView />,
+    children: [
+      {
+        path: 'games',
+        element: <MainView />,
+      },
+    ],
+  },
+]);
 
 
 const darkTheme = createTheme({
@@ -26,7 +31,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-
   return (
     <ThemeProvider theme={darkTheme}>
       <QueryClientProvider client={queryClient}>
