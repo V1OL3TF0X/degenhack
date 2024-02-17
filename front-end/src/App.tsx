@@ -29,7 +29,12 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <UseInkathonProvider appName='My dApp' defaultChain={alephzeroTestnet} deployments={getDeployments()} connectOnInit={true}>
+    <UseInkathonProvider
+      appName='My dApp'
+      defaultChain={alephzeroTestnet}
+      deployments={getDeployments()}
+      connectOnInit={true}
+    >
       <ThemeProvider theme={darkTheme}>
         <QueryClientProvider client={queryClient}>
           <Toaster />

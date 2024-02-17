@@ -14,10 +14,8 @@ import {
   isWalletInstalled,
   useBalance,
   useInkathon,
-} from '@scio-labs/use-inkathon'
-import { encodeAddress } from '@polkadot/util-crypto'
-
-
+} from '@scio-labs/use-inkathon';
+import { encodeAddress } from '@polkadot/util-crypto';
 
 function MainView() {
   const [isWalletDialogOpen, setWalletDialogOpen] = useState(false);
@@ -26,20 +24,13 @@ function MainView() {
 
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | null>(null);
 
-
-
   const truncateHash = (hash: string | undefined, paddingLength = 6): string | undefined => {
-    if (!hash?.length) return undefined
-    if (hash.length <= paddingLength * 2 + 1) return hash
-    return hash.replace(hash.substring(paddingLength, hash.length - paddingLength), '…')
-  }
+    if (!hash?.length) return undefined;
+    if (hash.length <= paddingLength * 2 + 1) return hash;
+    return hash.replace(hash.substring(paddingLength, hash.length - paddingLength), '…');
+  };
 
-  const {
-    activeAccount,
-    activeChain,
-    api,
-    accounts
-  } = useInkathon()
+  const { activeAccount, activeChain, api, accounts } = useInkathon();
 
   useEffect(() => {
     if (activeAccount && activeAccount.address) {
@@ -54,7 +45,7 @@ function MainView() {
       const data = await response.json();
       if (data && data.avatarLink) {
         setAvatarUrl(data.avatarLink);
-        console.log(data.avatarLink)
+        console.log(data.avatarLink);
       } else {
         setAvatarUrl(null);
       }
@@ -64,41 +55,38 @@ function MainView() {
     }
   };
 
-  const [chainInfo, setChainInfo] = useState<{ [_: string]: any }>()
+  const [chainInfo, setChainInfo] = useState<{ [_: string]: any }>();
 
   // Fetch Chain Info
   const fetchChainInfo = async () => {
     if (!api) {
-      setChainInfo(undefined)
-      return
+      setChainInfo(undefined);
+      return;
     }
 
-    const chain = (await api.rpc.system.chain())?.toString() || ''
-    const version = (await api.rpc.system.version())?.toString() || ''
-    const properties = ((await api.rpc.system.properties())?.toHuman() as any) || {}
-    const tokenSymbol = properties?.tokenSymbol?.[0] || 'UNIT'
-    const tokenDecimals = properties?.tokenDecimals?.[0] || 12
+    const chain = (await api.rpc.system.chain())?.toString() || '';
+    const version = (await api.rpc.system.version())?.toString() || '';
+    const properties = ((await api.rpc.system.properties())?.toHuman() as any) || {};
+    const tokenSymbol = properties?.tokenSymbol?.[0] || 'UNIT';
+    const tokenDecimals = properties?.tokenDecimals?.[0] || 12;
     const chainInfo = {
       Chain: chain,
       Version: version,
       Token: `${tokenSymbol} (${tokenDecimals} Decimals)`,
-    }
-    setChainInfo(chainInfo)
-
-  }
+    };
+    setChainInfo(chainInfo);
+  };
   useEffect(() => {
-    fetchChainInfo()
-    console.log(chainInfo)
-    console.log(activeAccount)
-  }, [api])
-
-
+    fetchChainInfo();
+    console.log(chainInfo);
+    console.log(activeAccount);
+  }, [api]);
 
   const { reducibleBalanceFormatted } = useBalance(activeAccount?.address, true, {
     forceUnit: false,
     fixedDecimals: 2,
     removeTrailingZeros: true,
-  })
+  });
 
   function disconnectWallet() {
     localStorage.removeItem('selectedWalletAddress');
@@ -113,17 +101,13 @@ function MainView() {
     }
   };
 
-
-
   return (
     <>
       <Header
         onLoginClick={handleLoginClick}
-        walletAddress={activeAccount ?
-          truncateHash(
-            encodeAddress(activeAccount.address, activeChain?.ss58Prefix || 42),
-            8,
-          ) : ''}
+        walletAddress={
+          activeAccount ? truncateHash(encodeAddress(activeAccount.address, activeChain?.ss58Prefix || 42), 8) : ''
+        }
         balance={reducibleBalanceFormatted}
         avatarUrl={avatarUrl}
         loadingBalance={!api}
@@ -131,11 +115,7 @@ function MainView() {
       <Box className={styles.mainViewContainer}>
         <GameView />
       </Box>
-      <WalletConnectDialog
-        open={isWalletDialogOpen}
-        onClose={() => setWalletDialogOpen(false)}
-
-      />
+      <WalletConnectDialog open={isWalletDialogOpen} onClose={() => setWalletDialogOpen(false)} />
     </>
   );
 }

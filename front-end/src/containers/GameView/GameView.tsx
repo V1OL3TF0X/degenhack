@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Box, CircularProgress, Typography, ButtonBase } from '@mui/material';
-import game from '../../assets/ticTacToe.jpg'
+import game from '../../assets/ticTacToe.jpg';
 
 import GroupsIcon from '@mui/icons-material/Groups';
-import TokenIcon from "../../assets/A0_icon.svg?react";
+import TokenIcon from '../../assets/A0_icon.svg?react';
 import styles from './GameView.module.scss';
 import { useGetAllGames } from '../../api/hooks/games/useGetAllGames';
 import toast from 'react-hot-toast';
@@ -68,50 +68,71 @@ const GameView = () => {
   const isLoading = !contract || isChecking;
 
   return (
-    <Box className={styles.gamesBox} >
-      {allGames.map(({name, minParticipants: min, maxParticipants: max, _id: id, betAmount }) => (
-        <Box maxWidth='300px' key={id} component={ButtonBase} onClick={() => handleJoin(id)}  disabled={!api || !contract || !activeAccount || isLoading}>
+    <Box className={styles.gamesBox}>
+      {allGames.map(({ name, minParticipants: min, maxParticipants: max, _id: id, betAmount }) => (
+        <Box
+          maxWidth='300px'
+          key={id}
+          component={ButtonBase}
+          onClick={() => handleJoin(id)}
+          disabled={!api || !contract || !activeAccount || isLoading}
+        >
           <Box
-           sx={{
-            overflow: 'hidden',
-            position: 'relative',
-            '&:hover img': {
-              transform: 'scale(1.1)',  
-              transition: 'transform 0.3s ease',
-              borderRadius: "12px",
-              cursor: "pointer",
-            },
-            ...(isLoading && {
-              filter: 'grayscale(1)',
-            }),
-          }}
+            sx={{
+              overflow: 'hidden',
+              position: 'relative',
+              '&:hover img': {
+                transform: 'scale(1.1)',
+                transition: 'transform 0.3s ease',
+                borderRadius: '12px',
+                cursor: 'pointer',
+              },
+              ...(isLoading && {
+                filter: 'grayscale(1)',
+              }),
+            }}
           >
-          {isLoading ? (
-            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%'>
-              <CircularProgress />
-            </Box>
-          ) : (<div style={{ position: "relative", width: '100%', height: '100%' }}>
-            <img
-              src={game}
-              alt="Game"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: "12px"}}
-            />
-          </div>
-          )}
-          <div style={{ cursor: "pointer", position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "12px",  background: "linear-gradient(0deg, black, transparent 40%)" }}>
-            <Typography>{name}</Typography>
-            <div className={styles.participantsNumber}>
-              <GroupsIcon />
-              <Typography>{min === max ? min : `${min} - ${max}`}</Typography>
+            {isLoading ? (
+              <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%'>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <img
+                  src={game}
+                  alt='Game'
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                />
+              </div>
+            )}
+            <div
+              style={{
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-start',
+                padding: '12px',
+                background: 'linear-gradient(0deg, black, transparent 60%)',
+              }}
+            >
+              <Typography style={{ fontWeight: 'bold', textTransform: 'capitalize' }}>{name}</Typography>
+              <div className={styles.participantsNumber}>
+                <GroupsIcon />
+                <Typography>{min === max ? min : `${min} - ${max}`}</Typography>
+              </div>
+              <div className={styles.participantsNumber}>
+                <TokenIcon />
+                <Typography>{betAmount}</Typography>
+              </div>
             </div>
-            <div className={styles.participantsNumber}>
-              <TokenIcon />
-              <Typography>{betAmount}</Typography>
-            </div>
-          </div>
           </Box>
         </Box>
-
       ))}
     </Box>
   );
