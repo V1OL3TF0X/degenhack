@@ -1,7 +1,7 @@
 import { API_GAMES_URL } from './base';
-import { Games } from './types';
+import { Game } from './types';
 
-export const getAllGames: () => Promise<Games> = async () => {
+export const getAllGames: () => Promise<Game[]> = async () => {
   try {
     const response = await fetch(`${API_GAMES_URL}`, {
       method: 'GET',
