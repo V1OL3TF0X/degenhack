@@ -1,6 +1,5 @@
 const express = require("express");
 const Game = require("../model/game");
-const User = require("../model/user");
 const { createGame, winGame, reimbruiseGame } = require("../utils/blockchain");
 
 const router = express.Router();
@@ -213,9 +212,7 @@ router.put("/:id/end", (req, res, next) => {
               game
                 .save()
                 .then(() =>
-                  User.findById(winnerId).then(({ _id }) =>
-                    winGame(game._id, _id)
-                  )
+                    winGame(game._id, req.body.winner)
                 )
                 .then(() => {
                   res.status(200).json({
