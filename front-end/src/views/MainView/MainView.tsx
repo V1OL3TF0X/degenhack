@@ -5,21 +5,11 @@ import styles from './MainView.module.scss';
 import Header from '../../components/Header/header';
 import WalletConnectDialog from '../../components/WalletConnectDialog/walletConnectDialog';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import {
-  SubstrateChain,
-  SubstrateWalletPlatform,
-  alephzero,
-  allSubstrateWallets,
-  getSubstrateChain,
-  isWalletInstalled,
-  useBalance,
-  useInkathon,
-} from '@scio-labs/use-inkathon';
+import { useBalance, useInkathon } from '@scio-labs/use-inkathon';
 import { encodeAddress } from '@polkadot/util-crypto';
 
 function MainView() {
   const [isWalletDialogOpen, setWalletDialogOpen] = useState(false);
-  const [_, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | null>(null);
