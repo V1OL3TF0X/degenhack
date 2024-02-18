@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography, ButtonBase } from '@mui/material';
-import game from '../../assets/ticTacToe.jpg';
-
+import defaultGameImage from '../../assets/defaultGame.jpg';
+import chessImg from '../../assets/chess.jpg';
+import goImg from '../../assets/go.jpg';
+import ticTacToe from '../../assets/ticTacToe.jpg';
 import GroupsIcon from '@mui/icons-material/Groups';
 import TokenIcon from '../../assets/A0_icon.svg?react';
 import styles from './GameView.module.scss';
@@ -14,11 +16,22 @@ import { BN } from '@polkadot/util';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getAllKeysString = (obj: any) => Object.entries(obj).reduce((acc, [k, v]) => `${acc}\n  - ${k}: ${v}`, '');
 
+const gameImages: { [key: string]: string } = {
+  'tic tac toe': ticTacToe,
+  'chess': chessImg,
+  'go': goImg
+
+};
+
 const GameView = () => {
   const { api, activeAccount } = useInkathon();
   const { isPending, isError, data: allGames, error } = useGetAllGames();
   const [isChecking, setIsChecking] = useState(false);
   const { contract } = useRegisteredContract(CONTRACT_ID);
+
+  useEffect(() => {
+    console.log(allGames);
+  })
 
   if (isError) {
     return <span>Error: {error.message}</span>;
@@ -99,7 +112,7 @@ const GameView = () => {
             ) : (
               <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                 <img
-                  src={game}
+                  src={gameImages[name] || defaultGameImage}
                   alt='Game'
                   style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
                 />
