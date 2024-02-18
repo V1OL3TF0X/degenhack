@@ -8,6 +8,7 @@ const gameSchema = mongoose.Schema({
   },
   winnerId: { type: String, required: false },
   prize: { type: Number, required: false, default: 0 },
+  betAmount: { type: Number, required: false, default: 0 },
   minParticipants: { type: Number, required: true },
   maxParticipants: { type: Number, required: true },
   timestampStart: { type: Number, required: false, default: 0 },
