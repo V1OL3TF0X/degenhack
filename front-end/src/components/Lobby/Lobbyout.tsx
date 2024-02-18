@@ -6,6 +6,8 @@ import { useInkathon, useRegisteredContract, contractTx } from '@scio-labs/use-i
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { CONTRACT_ID } from '../../web3/getDeployments';
+import { useMutation } from '@tanstack/react-query';
+import { mockJoinGame, winGame, startGame } from '../../api/winGame';
 
 type LobbyProps = {
   game: Game;
@@ -22,9 +24,32 @@ function Lobby({ game, children, onClose }: LobbyProps) {
   const [canJoin, setCanJoin] = useState(false);
   const [inGame, setInGame] = useState(false);
   const { contract } = useRegisteredContract(CONTRACT_ID);
+  const { mutate: winGameBE } = useMutation({
+    mutationFn: winGame,
+    onSuccess() {
+      setInGame(false);
+      toast.success(`You have won in ${game.name}!`);
+    },
+  });
+  const { mutate: startGameBE } = useMutation({
+    mutationFn: startGame,
+    onSuccess() {
+      setInGame(true);
+      setTimeout(() => {
+        winGameBE({ gameId: game._id, winner: activeAccount!.address });
+        onClose();
+      }, 7_000);
+    },
+  });
+  const { mutate: joinGameBE } = useMutation({
+    mutationFn: mockJoinGame,
+    onSuccess() {
+      startGameBE(game._id);
+    },
+  });
 
   useEffect(() => {
-    setTimeout(() => setCanJoin(true), 10_000);
+    setTimeout(() => setCanJoin(true), 5_000);
   }, []);
 
   const joinGame = async () => {
@@ -53,8 +78,11 @@ function Lobby({ game, children, onClose }: LobbyProps) {
       // }
       if (result?.isInBlock) {
         toast.success('Game joined successfully');
-        setInGame(true);
-        // TODO - set Timeout, after Xs win game
+        joinGameBE({
+          gameId: game._id,
+          userId: activeAccount.address,
+          times: game.minParticipants,
+        });
       } else if (result?.status.isInvalid) {
         toast.error('transaction invalid');
       }

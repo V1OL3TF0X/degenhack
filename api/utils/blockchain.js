@@ -1,6 +1,6 @@
 const { Keyring, WsProvider, ApiPromise } = require("@polkadot/api");
 const { ContractPromise } = require("@polkadot/api-contract");
-
+const { contractTx } = require("@scio-labs/use-inkathon");
 const queryOpts = {
   storageDepositLimit: null,
   gasLimit: 3000n * 1000000n,
@@ -20,8 +20,8 @@ ApiPromise.create({ provider: wsProvider }).then((api) => {
   alice = keyring.addFromUri("//Alice", { name: "Alice default" });
 }, console.error);
 
-const createGame = async (id, maxParticipants, betAmount) => {
-  await contract.tx
+const createGame = (id, maxParticipants, betAmount) =>
+  contract.tx
     .createGame(queryOpts, id, maxParticipants, betAmount)
     .signAndSend(alice, (result) => {
       if (result.status.isInBlock) {
@@ -30,10 +30,9 @@ const createGame = async (id, maxParticipants, betAmount) => {
         console.log("finalized");
       }
     });
-};
 
-const winGame = async (id, winnerWalletId) => {
-  await contract.tx
+const winGame = (id, winnerWalletId) =>
+  contract.tx
     .winGame(queryOpts, winnerWalletId, id)
     .signAndSend(alice, (result) => {
       if (result.status.isInBlock) {
@@ -42,18 +41,14 @@ const winGame = async (id, winnerWalletId) => {
         console.log("finalized");
       }
     });
-};
 
-const reimbruiseGame = async (id) => {
-  await contract.tx
-    .reimbruiseGame(queryOpts, id)
-    .signAndSend(alice, (result) => {
-      if (result.status.isInBlock) {
-        console.log("in a block");
-      } else if (result.status.isFinalized) {
-        console.log("finalized");
-      }
-    });
-};
+const reimbruiseGame = (id) =>
+  contract.tx.reimbruiseGame(queryOpts, id).signAndSend(alice, (result) => {
+    if (result.status.isInBlock) {
+      console.log("in a block");
+    } else if (result.status.isFinalized) {
+      console.log("finalized");
+    }
+  });
 
 module.exports = { reimbruiseGame, winGame, createGame };

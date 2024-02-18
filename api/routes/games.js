@@ -106,6 +106,7 @@ router.put("/:id/assign", (req, res, next) => {
         res.status(400).json({ message: `Users array required` });
         return;
       }
+      const prevLen = game.participants.length;
       req.body.users.forEach((user) => {
         if (user.operation == "ADD") {
           console.log("adding user ", user.id);
@@ -127,11 +128,15 @@ router.put("/:id/assign", (req, res, next) => {
         game
           .save()
           .then(() => {
-            if (game.participants.length >= game.minParticipants) {
-              createGame(game._id, game.maxParticipants, game.betAmount);
-            }
+            // if (
+            //   game.participants.length >= game.minParticipants &&
+            //   prevLen < game.minParticipants
+            // ) {
+            //   return createGame(game._id, game.maxParticipants, game.betAmount);
+            // }
           })
-          .then(() => {
+          .then((createGameRes) => {
+            console.log("create?", createGameRes);
             res.status(200).json({
               message: "Participants assigned successfully",
             });
@@ -211,10 +216,13 @@ router.put("/:id/end", (req, res, next) => {
               game.winnerId = req.body.winner;
               game
                 .save()
-                .then(() =>
-                    winGame(game._id, req.body.winner)
-                )
-                .then(() => {
+                .then(() => winGame(game._id, req.body.winner))
+                .then((result) => {
+                  console.log(
+                    JSON.stringify(
+                      typeof result === "function" ? result() : result
+                    )
+                  );
                   res.status(200).json({
                     message: `Game ${req.params.id} ended at ${new Date(
                       game.timestampEnd
