@@ -57,7 +57,7 @@ const GameView = () => {
       const costs = `\ngas required: ${getAllKeysString(gasRequired.toHuman())}\nstorage deposit ${getAllKeysString(storageDeposit.toHuman())}`;
       if (!isError) {
         setInLobby(game);
-        toast.success(`game joined successfully ${decodedOutput}` + costs);
+        toast.success('Check completed - game can be joined' + costs);
       } else {
         toast.error(decodedOutput + costs);
       }
