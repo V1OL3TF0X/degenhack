@@ -1,6 +1,6 @@
 const { Keyring, WsProvider, ApiPromise } = require("@polkadot/api");
 const { ContractPromise } = require("@polkadot/api-contract");
-const { contractTx } = require("@scio-labs/use-inkathon");
+
 const queryOpts = {
   storageDepositLimit: null,
   gasLimit: 3000n * 1000000n,
