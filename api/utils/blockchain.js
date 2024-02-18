@@ -42,8 +42,8 @@ const winGame = (id, winnerWalletId) =>
       }
     });
 
-const reimbruiseGame = (id) =>
-  contract.tx.reimbruiseGame(queryOpts, id).signAndSend(alice, (result) => {
+const reimburseGame = (id) =>
+  contract.tx.reimburseGame(queryOpts, id).signAndSend(alice, (result) => {
     if (result.status.isInBlock) {
       console.log("in a block");
     } else if (result.status.isFinalized) {
@@ -51,4 +51,4 @@ const reimbruiseGame = (id) =>
     }
   });
 
-module.exports = { reimbruiseGame, winGame, createGame };
+module.exports = { reimburseGame, winGame, createGame };

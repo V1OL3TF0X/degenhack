@@ -154,7 +154,7 @@ mod prize_manager {
         }
 
         #[ink(message)]
-        pub fn reimbruise_game(&mut self, game: String) -> Result<(), Error> {
+        pub fn reimburse_game(&mut self, game: String) -> Result<(), Error> {
             #[cfg(not(test))]
             let before = self.env().gas_left();
             #[cfg(test)]
@@ -171,16 +171,16 @@ mod prize_manager {
             let after = 0;
 
             let gas_fee = self.env().weight_to_fee(before - after);
-            let reimbruisement = if gas_fee <= self.env().balance() {
+            let reimbursement = if gas_fee <= self.env().balance() {
                 game_data.bet_amount
             } else {
                 game_data.bet_amount - (gas_fee / game_data.players.len() as u128)
             };
-            let transfer_reimbrusement = |p| Self::env().transfer(p, reimbruisement);
+            let transfer_reimbursement = |p| Self::env().transfer(p, reimbursement);
             game_data
                 .players
                 .into_iter()
-                .try_for_each(transfer_reimbrusement)?;
+                .try_for_each(transfer_reimbursement)?;
             Ok(())
         }
     }
@@ -328,7 +328,7 @@ mod prize_manager {
         }
 
         #[ink::test]
-        fn reimbruise_game_works() {
+        fn reimburse_game_works() {
             let DefaultAccounts { charlie, bob, .. } = default_accounts::<DE>();
             let (mut prize_manager, game_hash, bet_amount, ..) = sample_game!(2);
 
@@ -343,7 +343,7 @@ mod prize_manager {
             transfer_in::<DE>(bet_amount);
             println!("{:?}", get_account_balance::<DE>(charlie));
             println!("{:?}", get_account_balance::<DE>(bob));
-            assert_eq!(prize_manager.reimbruise_game(game_hash.to_owned()), Ok(()));
+            assert_eq!(prize_manager.reimburse_game(game_hash.to_owned()), Ok(()));
             assert_eq!(get_account_balance::<DE>(charlie), init_charlie_balance);
             assert_eq!(get_account_balance::<DE>(bob), init_bob_balance);
         }

@@ -1,6 +1,6 @@
 const express = require("express");
 const Game = require("../model/game");
-const { createGame, winGame, reimbruiseGame } = require("../utils/blockchain");
+const { createGame, winGame, reimburseGame } = require("../utils/blockchain");
 
 const router = express.Router();
 
@@ -37,7 +37,7 @@ router.delete("/:id", (req, res, next) => {
     .then((result) => {
       console.log(result);
       if (result.deletedCount > 0) {
-        reimbruiseGame(req.params.id).then(() => {
+        reimburseGame(req.params.id).then(() => {
           res
             .status(200)
             .json({ message: `Game with id ${req.params.id} deleted` });

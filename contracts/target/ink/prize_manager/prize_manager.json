@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0xd7e0dd32daf566ad9ec4ab405bbc0981ea8e0839907ddfb48bf05f557c001821",
+    "hash": "0x84e00d55eb30de7b309a223644fdf988384ddee2667c3f06bbfc674fdc6ebd2a",
     "language": "ink! 4.3.0",
     "compiler": "rustc 1.76.0",
     "build_info": {
@@ -213,7 +213,7 @@
         ],
         "default": false,
         "docs": [],
-        "label": "reimbruise_game",
+        "label": "reimburse_game",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -223,7 +223,7 @@
           ],
           "type": 10
         },
-        "selector": "0x2f45538b"
+        "selector": "0x6a6559c8"
       }
     ]
   },
